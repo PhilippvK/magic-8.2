@@ -13,6 +13,8 @@ MODULES    = cmwind commands database dbwind debug drc extflat extract \
 MAKEFLAGS  =
 INSTALL_CAD_DIRS = windows doc ${TECH}
 
+LDFLAGS := " -L/opt/X11/lib "
+
 include defs.mak
 
 all:	$(ALL_TARGET)
@@ -35,6 +37,8 @@ config:
 
 tcllibrary: database/database.h modules
 	@echo --- making Tcl shared libraries
+	@echo --- ${PROGRAMS}
+	@echo --- ${MAKE}
 	for dir in ${PROGRAMS}; do \
 		(cd $$dir && ${MAKE} tcl-main); done
 
@@ -67,6 +71,7 @@ install: $(INSTALL_TARGET)
 install-magic:
 	@echo --- installing executable to $(DESTDIR)${BINDIR}
 	@echo --- installing runtime files to $(DESTDIR)${LIBDIR}
+	@echo --- ${INSTALL_CAD_DIRS}
 	@${MAKE} install-real 2>&1 >> install.log
 
 install-real: install-dirs
@@ -86,6 +91,7 @@ install-dirs:
 install-tcl:
 	@echo --- installing executable to $(DESTDIR)${BINDIR}
 	@echo --- installing runtime files to $(DESTDIR)${LIBDIR}
+	@echo --- ${INSTALL_CAD_DIRS} ${PROGRAMS}
 	@${MAKE} install-tcl-real 2>&1 >> install.log
 
 install-tcl-real: install-tcl-dirs
